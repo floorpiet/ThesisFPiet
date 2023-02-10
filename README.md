@@ -1,14 +1,17 @@
 ## ThesisFPiet
 Repository including queries and code
 
-#Data aggregation
+# Data aggregation
 The set which is put into the model is the set for which one price elasticity coefficient is estimated. Hence, if product-specific, time-specific, category-specific, or any other specific elasticity is preferred, this should already be filtered in the data.
 The aggregation of the data is that every observation represents the data of one week regarding a product within a price line.
 
 The model has a partially linear form, in which the dependent variable (log(demand)) is explained by the treatment variable (log(selling price)). In the model other (log-transformed) covariates are included in a possibly non-parametric function. As endogeneity might be present due to confounding variables within the covariates explainign both price and demand, also an instrumental variable is included (log(purchase price)). As the covariates might enter the demand equation in a non-linear fashion, the DML method is used.
 
+# Method (in short)
 In the DML method, 2 stages are executed. In the first stage, using a sample-splitting method, the three main variables (demand, sell price and purcahse price) are estimated by the other covariates present in the model. These estimations are then used to residualize the variables by subtracting the predictions from the observed values. In the second stage, these adjusted variables are then assumed to be orthogonal to the covariates, and subsequently, the effect of the adjusted selling price on adjusted demand (a.k.a. the price elasticity) is estimated using the adjusted instrumental variable (IV regression).
 
+
+# Data Prep
 Before the data can be put into a model, I used a script to transform the data for the data to be further prepped. Hereby a "checklist" for what needs to be done before it can be put into a model:  
 - remove outliers (as you probably already did)  
 - create lags of relevant fields (product-specific demand is specifically interesting)  
