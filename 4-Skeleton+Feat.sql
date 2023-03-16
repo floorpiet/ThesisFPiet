@@ -1,5 +1,6 @@
 /*
   Create full set by combining skeleton with AOR and other features
+  aggregation level = day x article x ppl
  */
 
 CREATE OR REPLACE TABLE temp.fpiet_basic_dataset AS (
