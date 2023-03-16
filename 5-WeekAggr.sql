@@ -1,4 +1,6 @@
--- week aggregation start
+/*
+ Data set based on week aggregation: week x article x ppl
+*/
 
 CREATE OR REPLACE TABLE temp.fpiet_dataset_drinks AS (
                                                      WITH
