@@ -5,6 +5,16 @@ two tables: one for ppl price and one for default price (default price table nee
 PAY ATTENTION: 2 QUERIES TO RUN
 */
 
+/*
+two price tables tables: one for ppl price and one for default price (default price table needs different join w.r.t. skeleton)
+there can be multiple prices for an article on one day so therefore use RN
+
+! PAY ATTENTION: 2 QUERIES TO RUN
+*/
+
+-- need to adapt: ``If you are using ft_price as your source for purchasing prices, time to move to ft_article_purchasing_price - > ft_price will soon be deprecated.''
+
+-- ppl price table
 CREATE OR REPLACE TABLE temp.fpiet_prices AS (
                                              WITH
                                                all_prices AS
@@ -13,7 +23,8 @@ CREATE OR REPLACE TABLE temp.fpiet_prices AS (
                                                  skeleton.*,
                                                  IFF(skeleton.ppl = 'default', NULL, ftp.price_in_cents)                                                                AS price_in_cents_ppl,
                                                  IFF(skeleton.ppl = 'default', ftp.price_in_cents, NULL)                                                                AS price_in_cents_default,
-                                                 -- Need to use row number in order to use last changed price on date only
+                                                 -- Need to include row number rn
+                                                 -- This column is used to query last changed price on given date only
                                                  ROW_NUMBER() OVER (PARTITION BY skeleton.key_article,skeleton.key_date,skeleton.ppl ORDER BY price_end_date_time DESC) AS rn
                                                FROM temp.fpiet_skeleton AS skeleton
                                                  left outer JOIN dim.ft_price AS ftp
@@ -25,11 +36,11 @@ CREATE OR REPLACE TABLE temp.fpiet_prices AS (
                                                  )
                                              SELECT *
                                              FROM all_prices
-
-                                             WHERE rn = '1'
+                                             WHERE rn = '1' -- used last set price on a day (in case >1 price changes on a day)
                                              ORDER BY key_article, key_date, ppl
-                                             )
+                                             );
 
+-- default price table
 CREATE OR REPLACE TABLE temp.fpiet_defprices AS (
                                              WITH
                                                all_prices AS
@@ -37,7 +48,8 @@ CREATE OR REPLACE TABLE temp.fpiet_defprices AS (
                                                SELECT
                                                  skeleton.*,
                                                  ftp.price_in_cents AS price_in_cents_default,
-                                                 -- Need to use row number in order to use last changed price on date only
+                                                 -- Need to include row number rn
+                                                 -- This column is used to query last changed price on given date only
                                                  ROW_NUMBER() OVER (PARTITION BY skeleton.key_article,skeleton.key_date,skeleton.ppl ORDER BY price_end_date_time DESC) AS rn
                                                FROM temp.fpiet_skeleton AS skeleton
                                                  left outer JOIN dim.ft_price AS ftp
@@ -50,10 +62,9 @@ CREATE OR REPLACE TABLE temp.fpiet_defprices AS (
                                                  )
                                              SELECT *
                                              FROM all_prices
-                                             WHERE rn = '1'
+                                             WHERE rn = '1' -- used last set price on a day (in case >1 price changes on a day)
                                              ORDER BY key_article, key_date, ppl
-                                             )
+                                             );
 
-select*from temp.fpiet_prices
 
 
