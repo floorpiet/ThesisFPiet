@@ -1,18 +1,11 @@
 /*
-THERE CAN BE MANY PRICES FOR AN ARTICLE ON ONE DAY so therefore use RN
-two tables: one for ppl price and one for default price (default price table needs different join w.r.t. skeleton)
-
-PAY ATTENTION: 2 QUERIES TO RUN
-*/
-
-/*
 two price tables tables: one for ppl price and one for default price (default price table needs different join w.r.t. skeleton)
 there can be multiple prices for an article on one day so therefore use RN
 
 ! PAY ATTENTION: 2 QUERIES TO RUN
 */
 
--- need to adapt: ``If you are using ft_price as your source for purchasing prices, time to move to ft_article_purchasing_price - > ft_price will soon be deprecated.''
+-- need to update: ``If you are using ft_price as your source for purchasing prices, time to move to ft_article_purchasing_price - > ft_price will soon be deprecated.''
 
 -- ppl price table
 CREATE OR REPLACE TABLE temp.fpiet_prices AS (
@@ -65,6 +58,4 @@ CREATE OR REPLACE TABLE temp.fpiet_defprices AS (
                                              WHERE rn = '1' -- used last set price on a day (in case >1 price changes on a day)
                                              ORDER BY key_article, key_date, ppl
                                              );
-
-
 
