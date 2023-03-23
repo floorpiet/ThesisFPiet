@@ -7,7 +7,7 @@ SET start_date = '20201214'; -- lagged data included so start from week 51 2020
 SET end_date = '20230101'; -- week 53 2022
 SET start_date_2023set = '20221210'; --for different set
 SET end_date_2023set='20230301'; --for different set
-SET category = 'Kaas'--'Drinken'--,
+SET category = 'Drinken'--,'Kaas'--
 SET start_date2 = '2021-01-01'; -- use assortment from within this period
 SET end_date2 = '2023-01-01' ;
 
@@ -40,3 +40,4 @@ CREATE OR REPLACE TABLE temp.fpiet_skeleton AS (
                                                  CROSS JOIN ppls
                                                ORDER BY key_article, key_date, ppl
                                                )
+;
