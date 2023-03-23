@@ -84,7 +84,7 @@ CREATE OR REPLACE TABLE temp.fpiet_basic_dataset AS (
                                                       dma.art_p_cat_lev_2                                       AS article_cat_2,
                                                       dma.art_p_cat_lev_3                                       AS article_cat_3,
                                                       dma.art_p_cat_lev_4                                       AS article_cat_4,
-                                                      aorppl.nr_orders_day_ppl,
+                                                      aor.nr_orders_day_ppl,
                                                       aor.sum_regular_art_sales_ppl,
                                                       skeleton.key_week,
                                                       dma.article_id,
@@ -128,11 +128,6 @@ CREATE OR REPLACE TABLE temp.fpiet_basic_dataset AS (
                                                                         AND skeleton.key_date = unav.key_date
                                                       LEFT OUTER JOIN weather
                                                                       ON skeleton.key_date = weather.key_date
-                                                      LEFT OUTER JOIN temp.fpiet_aor_ppl AS aorppl
-                                                                      ON skeleton.key_date = aorppl.key_order_date
-                                                                        AND skeleton.ppl = aorppl.order_price_line_type
-                                                    WHERE skeleton.ppl <> 'default' -- has no aor so not useful (did use default data in prices)
+                                                    WHERE skeleton.ppl <> 'default' -- has no aor so filter not necessary (but did use default data in prices)
                                                     ORDER BY key_article, date, ppl
                                                     );
-
-
