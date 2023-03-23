@@ -44,7 +44,3 @@ CREATE OR REPLACE TABLE temp.fpiet_aor AS (
                                           ORDER BY key_order_date, key_article, ppl
                                           )
 ;
-
-
-
-
